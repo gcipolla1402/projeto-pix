@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Verificador Pix</title>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 40px;
+          background-color: #f2f2f2;
+        }
+        .container {
+          background-color: white;
+          padding: 20px;
+          max-width: 500px;
+          margin: auto;
+          border-radius: 10px;
+          box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+          text-align: center;
+        }
+        input, button {
+          padding: 10px;
+          width: 100%;
+          margin-top: 10px;
+        }
+        #resultado {
+          margin-top: 20px;
+          font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Verificador de Chave Pix</h1>
+    <input type="text" id="chave" placeholder="Digite a chave Pix" />
+    <button onclick="verificar()">Verificar</button>
+    <button onclick="denunciar()">⚠️ Denunciar chave Pix</button>
+    <div id="resultado"></div>
+</div>
+
+<script>
+    function verificar() {
+      const chave = document.getElementById('chave').value;
+      fetch(`/api/pix/verificar/${chave}`)
+        .then(response => response.text())
+        .then(text => {
+          document.getElementById('resultado').innerText = text;
+        })
+        .catch(error => {
+          document.getElementById('resultado').innerText = "Erro na verificação.";
+        });
+    }
+
+    function denunciar() {
+      const chave = document.getElementById('chave').value;
+      fetch('/api/pix/denunciar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chavePix: chave })
+      })
+      .then(response => response.text())
+      .then(text => {
+        document.getElementById('resultado').innerText = text;
+      })
+      .catch(error => {
+        document.getElementById('resultado').innerText = "Erro ao denunciar.";
+      });
+    }
+</script>
+</body>
+</html>
+
+

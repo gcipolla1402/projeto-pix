@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Histórico de Denúncias</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 30px; background: #f4f4f4; }
+    h1 { text-align: center; }
+    table { width: 80%%; margin: auto; border-collapse: collapse; background: white; }
+    th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
+    th { background-color: #eee; }
+  </style>
+</head>
+<body>
+  <h1>Histórico de Denúncias</h1>
+  <table id="tabela-denuncias">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Chave Pix</th>
+        <th>Data da Denúncia</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    fetch('/api/denuncias')
+      .then(resp => resp.json())
+      .then(dados => {
+        const tbody = document.querySelector("#tabela-denuncias tbody");
+        dados.forEach(denuncia => {
+          const row = `<tr>
+            <td>${denuncia.id}</td>
+            <td>${denuncia.chavePix}</td>
+            <td>${denuncia.data}</td>
+          </tr>`;
+          tbody.innerHTML += row;
+        });
+      });
+  </script>
+</body>
+</html>
